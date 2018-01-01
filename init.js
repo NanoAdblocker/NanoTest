@@ -58,6 +58,7 @@ global.app = (() => {
 
 /**
  * The browser class, represents an instance of Chromium.
+ * https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md
  * @class
  */
 global.Browser = class {
@@ -87,11 +88,15 @@ global.Browser = class {
          * @prop {PuppeteerBrowser}
          */
         this.browser = null;
-        /**
-         * Tab store.
-         * @prop {Array.<Tab>}
-         */
-        this.tabs = [];
+    }
+    /**
+     * Perform cleanup tasks.
+     * @private @method
+     */
+    _cleanup() {
+        assert(this.browser !== null);
+
+        this.browser = null;
     }
     /**
      * Setup browser.
@@ -109,6 +114,11 @@ global.Browser = class {
             ],
             userDataDir: this.userdata,
         });
+
+        this.browser.on("disconnected", () => {
+            console.log("[Browser] Disconnected");
+            this._cleanup();
+        });
     }
     /**
      * Close browser.
@@ -118,26 +128,36 @@ global.Browser = class {
         assert(this.browser !== null);
 
         await this.browser.close();
-        this.browser = null;
-        this.tabs = [];
+        this._cleanup();
     }
 };
+
+// Abort on promise rejection
+process.on("unhandledRejection", (err) => {
+    throw err;
+});
 
 // Main test function
 (async () => {
     // Parse options
     let extension = "../NanoCore/dist/build/Nano_Chromium/";
     let userdata = "./userdata/data/";
+    let autoconfig = true;
     for (let arg in process.argv) {
         const extOpt = "--override-extension-path=";
-        const extUser = "--override-user-data-dir=";
+        const userOpt = "--override-user-data-dir=";
+        const noacOpt = "--skip-auto-config";
 
         if (arg.startsWith(extOpt)) {
             extension = arg.substring(extOpt.lenght).trim();
         }
 
-        if (arg.startsWith(extUser)) {
-            extension = arg.substring(extUser.length).trim();
+        if (arg.startsWith(userOpt)) {
+            extension = arg.substring(userOpt.length).trim();
+        }
+
+        if (arg === noacOpt) {
+            autoconfig = false;
         }
     }
 
@@ -147,5 +167,7 @@ global.Browser = class {
     } catch (err) { }
     let browser = new Browser(extension, userdata);
     await browser.setup();
-
+    if (autoconfig) {
+        (require("./autoconfig.js"))(browser);
+    }
 })();
