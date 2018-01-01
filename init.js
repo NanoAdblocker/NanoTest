@@ -19,6 +19,12 @@ global.express = require("express");
 global.puppeteer = require("puppeteer");
 
 /**
+ * The base path of the localhost server.
+ * @const {string}
+ */
+global.localhostBase = "http://localhost:1337/";
+
+/**
  * Static express localhost server.
  * http://expressjs.com/en/api.html
  * @const {ExpressApp}
@@ -52,7 +58,7 @@ global.app = (() => {
     });
 
     app.listen(1337, "localhost");
-    console.log("[Server] Started :: http://localhost:1337/");
+    console.log("[Server] Started ::", localhostBase);
     return app;
 })();
 

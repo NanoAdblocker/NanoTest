@@ -93,7 +93,7 @@ module.exports = async (browser) => {
                         }
                     }
 
-                    window._nano_test_autoconfig_done = true;
+                    window._nano_test_openbgconsole_done = true;
                     break;
                 }
             }
@@ -101,10 +101,94 @@ module.exports = async (browser) => {
 
         performExtConfig();
     }, extid);
-    await tab.waitForFunction("window._nano_test_autoconfig_done === true");
-    await delay(1000);
+    await tab.waitForFunction("window._nano_test_openbgconsole_done === true");
+    await delay(2500);
 
-    // Update extension settings
+    // Update test filter
     tab = await browser.browser.newPage();
     await tab.goto("chrome-extension://" + extid + "/dashboard.html");
+    tab.evaluate((localhostBase) => {
+        const testFilter = localhostBase + "filter.txt";
+        const tab3p = document.querySelector("#dashboard-nav-widgets a[data-i18n='3pPageName']");
+        console.assert(tab3p instanceof HTMLAnchorElement);
+        tab3p.click();
+
+        const onIframeReady = () => {
+            const iframe = document.querySelector("iframe");
+            console.assert(iframe instanceof HTMLIFrameElement);
+            const win = iframe.contentWindow;
+            const doc = iframe.contentDocument;
+
+            // Disable auto update
+            const autoUpdate = doc.querySelector("#options #autoUpdate");
+            console.assert(autoUpdate instanceof win.HTMLInputElement);
+            if (autoUpdate.checked) {
+                autoUpdate.click();
+            }
+
+            // Disable unrelated filters
+            const filters = doc.querySelectorAll(".listEntry input");
+            console.assert(filters.length > 50);
+            for (let filter of filters) {
+                if (filter.checked && filter.nextElementSibling.textContent.trim() !== testFilter) {
+                    filter.click();
+                }
+                if (filter.nextElementSibling.textContent.trim() === testFilter) {
+                    if (!filter.checked) {
+                        filter.click();
+                    }
+                    const cache = filter.parentElement.querySelector(".status.cache");
+                    console.assert(cache instanceof win.HTMLSpanElement);
+                    if (win.getComputedStyle(cache).display !== "none") {
+                        cache.click();
+                    }
+                }
+            }
+
+            // Load test filter
+            const extraFilters = doc.getElementById("externalLists");
+            console.assert(extraFilters instanceof win.HTMLTextAreaElement);
+            extraFilters.value = testFilter;
+            const inputEvent = new win.Event("input", {
+                "bubbles": true,
+                "cancelable": true,
+            });
+            extraFilters.dispatchEvent(inputEvent);
+
+            // Apply and update
+            requestAnimationFrame(() => {
+                const apply = doc.getElementById("buttonApply");
+                console.assert(apply instanceof win.HTMLButtonElement);
+                if (!apply.classList.contains("disabled")) {
+                    apply.click();
+                }
+
+                const update = doc.getElementById("buttonUpdate");
+                console.assert(apply instanceof win.HTMLButtonElement);
+                if (!update.classList.contains("disabled")) {
+                    update.click();
+                }
+
+                window._nano_test_extconfig_done = true;
+            });
+        };
+
+        const checkIframeReady = () => {
+            const iframe = document.querySelector("iframe");
+            console.assert(iframe instanceof HTMLIFrameElement);
+            const lists = iframe.contentDocument.querySelectorAll(".listEntry");
+            if (lists.length > 50) {
+                onIframeReady();
+            } else {
+                setTimeout(checkIframeReady, 100);
+            }
+        };
+        checkIframeReady();
+    }, localhostBase);
+    await tab.waitForFunction("window._nano_test_extconfig_done === true;");
+    await delay(2500);
+
+    // Open test dashboard
+    tab = await browser.browser.newPage();
+    await tab.goto(localhostBase);
 };
