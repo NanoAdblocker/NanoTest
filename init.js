@@ -113,6 +113,7 @@ global.Browser = class {
                 "--load-extension=" + this.extension,
             ],
             userDataDir: this.userdata,
+            devtools: true,
         });
 
         this.browser.on("disconnected", () => {
