@@ -1,4 +1,4 @@
-# Nano Test Engine
+# Nano Test Engine [![Dependencies](https://david-dm.org/NanoAdblocker/NanoTest.svg)](https://david-dm.org/NanoAdblocker/NanoTest)
 
 But does it even work?
 
