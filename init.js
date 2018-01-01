@@ -25,6 +25,15 @@ global.puppeteer = require("puppeteer");
 global.localhostBase = "http://localhost:1337/";
 
 /**
+ * Wait for some time.
+ * @async @function
+ * @param {number} d - The delay.
+ */
+global.delay = (d) => {
+    return new Promise((resolve) => { setTimeout(resolve, d) });
+};
+
+/**
  * Static express localhost server.
  * http://expressjs.com/en/api.html
  * @const {ExpressApp}
@@ -119,7 +128,7 @@ global.Browser = class {
                 "--load-extension=" + this.extension,
             ],
             userDataDir: this.userdata,
-            devtools: true,
+            devtools: process.argv.includes("--debug-mode"),
         });
 
         this.browser.on("disconnected", () => {
@@ -144,7 +153,7 @@ process.on("unhandledRejection", (err) => {
     throw err;
 });
 
-// Main test function
+// Bootstrap
 (async () => {
     // Parse options
     let extension = "../NanoCore/dist/build/Nano_Chromium/";
@@ -172,9 +181,16 @@ process.on("unhandledRejection", (err) => {
     try {
         await (util.promisify(fs.mkdir))(userdata);
     } catch (err) { }
-    let browser = new Browser(extension, userdata);
+    global.browser = new Browser(extension, userdata);
     await browser.setup();
+    console.log("[Browser] Started");
     if (autoconfig) {
-        (require("./autoconfig.js"))(browser);
+        await (require("./config"))();
     }
+
+    // Open dashboard
+    global.dashboard = await browser.browser.newPage();
+    await dashboard.goto(localhostBase);
+    console.log("[Browser] Ready");
+    await (require("./test"))();
 })();

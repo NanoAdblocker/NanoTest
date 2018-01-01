@@ -1,24 +1,13 @@
 /**
- * Perform automated configuration of Nano Adblocker
- * then get the browser ready for tests.
+ * Automated configuration.
  */
 "use strict";
 
 /**
- * Wait for some time.
+ * Perform automated configuration.
  * @async @function
- * @param {number} d - The delay.
  */
-const delay = (d) => {
-    return new Promise((resolve) => { setTimeout(resolve, d) });
-};
-
-/**
- * Perform automated configuration of Nano Adblocker.
- * @async @function
- * @param {Browser} browser - The opened browser.
- */
-module.exports = async (browser) => {
+module.exports = async () => {
     // Find pages
     let bgpage, extid;
     let tab;
@@ -41,9 +30,11 @@ module.exports = async (browser) => {
         }
     });
     tab = await tab;
+    let toClose = [];
 
     // Open background page console
     await tab.goto("chrome://extensions/");
+    toClose.push(tab);
     tab.evaluate((extid) => {
         // This will blow up if Chromium extensions page is changed
         const devToggle = document.querySelector("#dev-toggle input[type='checkbox']");
@@ -102,11 +93,12 @@ module.exports = async (browser) => {
         performExtConfig();
     }, extid);
     await tab.waitForFunction("window._nano_test_openbgconsole_done === true");
-    await delay(2500);
+    await delay(2000);
 
     // Update test filter
     tab = await browser.browser.newPage();
     await tab.goto("chrome-extension://" + extid + "/dashboard.html");
+    toClose.push(tab);
     tab.evaluate((localhostBase) => {
         const testFilter = localhostBase + "filter.txt";
         const tab3p = document.querySelector("#dashboard-nav-widgets a[data-i18n='3pPageName']");
@@ -186,9 +178,10 @@ module.exports = async (browser) => {
         checkIframeReady();
     }, localhostBase);
     await tab.waitForFunction("window._nano_test_extconfig_done === true;");
-    await delay(2500);
+    await delay(2000);
 
-    // Open test dashboard
-    tab = await browser.browser.newPage();
-    await tab.goto(localhostBase);
+    // Clean up
+    for (let tab of toClose) {
+        await tab.close();
+    }
 };
