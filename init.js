@@ -11,7 +11,9 @@
  */
 // Built in
 global.assert = require("assert");
+global.fs = require("fs");
 global.path = require("path");
+global.util = require("util");
 // External
 global.express = require("express");
 global.puppeteer = require("puppeteer");
@@ -125,7 +127,7 @@ global.Browser = class {
 (async () => {
     // Parse options
     let extension = "../NanoCore/dist/build/Nano_Chromium/";
-    let userdata = "./user/";
+    let userdata = "./userdata/data/";
     for (let arg in process.argv) {
         const extOpt = "--override-extension-path=";
         const extUser = "--override-user-data-dir=";
@@ -139,6 +141,10 @@ global.Browser = class {
         }
     }
 
+    // Launch browser
+    try {
+        await (util.promisify(fs.mkdir))(userdata);
+    } catch (err) { }
     let browser = new Browser(extension, userdata);
     await browser.setup();
 
