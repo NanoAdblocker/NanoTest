@@ -1,3 +1,6 @@
+# Nano Adblocker test filter
+
+
 # Cosmetic Basic
 # These are plain CSS selectors, although even native CSS can get complex
 
@@ -7,6 +10,14 @@ localhost##nano-test-basic3
 
 localhost###nano_test_basic4 > div
 localhost##[data-test="nano-test-basic5"]
-localhost###nano_test_basic6 :first-child
+localhost###nano_test_basic6 *:first-child
 localhost###nano_test_basic7 + nano-test-basic7
 localhost###nano_test_basic8 > :not(span)
+
+localhost##.nano_test_basic9
+localhost#@#.nano_test_basic9
+
+
+# Cosmetic Extended
+
+localhost##.nano_test_basic1:has-text("HIDE")

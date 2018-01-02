@@ -180,8 +180,6 @@ module.exports = async () => {
     await tab.waitForFunction("window._nano_test_extconfig_done === true;");
     await delay(2000);
 
-    // Clean up
-    for (let tab of toClose) {
-        await tab.close();
-    }
+    // Mark opened tabs as need to be cleaned up
+    return toClose;
 };

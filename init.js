@@ -155,6 +155,8 @@ process.on("unhandledRejection", (err) => {
 
 // Bootstrap
 (async () => {
+    let cleanUp = [];
+
     // Parse options
     let extension = "../NanoCore/dist/build/Nano_Chromium/";
     let userdata = "./userdata/data/";
@@ -185,12 +187,15 @@ process.on("unhandledRejection", (err) => {
     await browser.setup();
     console.log("[Browser] Started");
     if (autoconfig) {
-        await (require("./config"))();
+        cleanUp = await (require("./config"))();
     }
 
     // Open dashboard
     global.dashboard = await browser.browser.newPage();
     await dashboard.goto(localhostBase);
+    for (let tab of cleanUp) {
+        await tab.close();
+    }
     console.log("[Browser] Ready");
     await (require("./test"))();
 })();
