@@ -14,7 +14,8 @@ const checkCosmeticTest = () => {
         return false;
     }
     for (let e of visible) {
-        if (getComputedStyle(e).display !== "block") {
+        const d = getComputedStyle(e).display;
+        if (d !== "block" && d !== "inline" && d !== "inline-block") {
             return false;
         }
     }
