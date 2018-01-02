@@ -22,6 +22,7 @@ node init
 --debug-mode
 Open the developer tool for every window
 Defaults to only open developer tool for the extension background page
+A debugger breakpoint will be triggered on failed test, this option can be useful to trace down failed tests
 
 --override-extension-path=<path>
 Change the path to the extension to load
