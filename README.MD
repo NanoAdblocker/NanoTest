@@ -29,7 +29,7 @@ Change the path to the extension to load
 Defaults to "../NanoCore/dist/build/Nano_Chromium/"
 
 --override-user-data-dir=<path>
-Change the path to user data directory
+Change the path to the user data directory
 Defaults to "./userdata/data/"
 
 --skip-auto-config
