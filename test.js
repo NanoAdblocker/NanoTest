@@ -8,7 +8,7 @@
  * Check whether a cosmetic test passed.
  * @function
  */
-const checkCosmeticTest = () => {
+const checkCosmeticTest = (debug) => {
     const visible = document.querySelectorAll("._nano_test_visible");
     if (visible.length === 0) {
         return false;
@@ -16,6 +16,9 @@ const checkCosmeticTest = () => {
     for (let e of visible) {
         const d = getComputedStyle(e).display;
         if (d !== "block" && d !== "inline" && d !== "inline-block") {
+            if (debug) {
+                debugger;
+            }
             return false;
         }
     }
@@ -26,6 +29,9 @@ const checkCosmeticTest = () => {
     }
     for (let e of hide) {
         if (getComputedStyle(e).display !== "none") {
+            if (debug) {
+                debugger;
+            }
             return false;
         }
     }
@@ -51,6 +57,7 @@ const tests = {
             return true;
         } catch (err) {
             if (/timeout/i.test(err.message)) {
+                await page.evaluate(checkCosmeticTest, true);
                 return false;
             } else {
                 throw err;
