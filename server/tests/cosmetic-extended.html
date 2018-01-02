@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="jspenguin2017" />
+    <title>Testing in progress...</title>
+</head>
+<body>
+    <div class="_nano_test_visible">TEST</div>
+
+    <div class="nano_test_extended1 _nano_test_hide">
+        <span class="_nano_test_hide">TEST</span>
+    </div>
+    <div class="nano_test_extended1 _nano_test_visible">
+        <a class="_nano_test_visible">TEST</a>
+    </div>
+    <div class="nano_test_extended1 _nano_test_visible">
+        <div class="_nano_test_visible">
+            <span class="_nano_test_visible">TEST</span>
+        </div>
+    </div>
+
+    <div class="nano_test_extended2 _nano_test_visible">TEST</div>
+    <div class="nano_test_extended2 _nano_test_hide">HI  DE</div>
+
+    <div data-test="extra-nano-test-extended3" class="_nano_test_hide">TEST</div>
+    <div id="nano_test_extended3" class="_nano_test_visible">HIDE</div>
+
+    <div id="nano_test_extended4" class="_nano_test_hide">TEST</div>
+    <div class="nano_test_extended4 _nano_test_visible">TEST</div>
+
+    <!-- getComputedStyle($0).color === "rgb(255, 0, 0)" -->
+    <div style="color: red;" class="nano_test_extended5 _nano_test_visible">TEST</div>
+    <!-- getComputedStyle($0).color === "rgb(0, 128, 0)" -->
+    <div style="color: green;" class="nano_test_extended5 _nano_test_hide">TEST</div>
+
+    <style>
+        .nano_test_extended6._nano_test_hide::after {
+            /* getComputedStyle($0, ":after").content === '"ST"' */
+            content: "ST";
+        }
+    </style>
+    <div class="nano_test_extended6 _nano_test_hide">TE</div>
+    <div class="nano_test_extended6 _nano_test_visible">TEST</div>
+
+    <style>
+        .nano_test_extended7._nano_test_hide::before {
+            /* getComputedStyle($0, ":before").content === '"TE"' */
+            content: "TE";
+        }
+    </style>
+    <div class="nano_test_extended7 _nano_test_visible">TEST</div>
+    <div class="nano_test_extended7 _nano_test_hide">ST</div>
+
+    <div id="nano_test_extended8" class="_nano_test_visible">
+        <span class="_nano_test_visible">TEST</span>
+        <a class="_nano_test_visible">TEST</a>
+        <span class="_nano_test_hide">TEST</span>
+        <a class="_nano_test_hide">TEST</a>
+    </div>
+
+    <div class="_nano_test_visible">TEST</div>
+</body>
+</html>

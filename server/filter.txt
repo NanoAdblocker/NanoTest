@@ -19,5 +19,14 @@ localhost#@#.nano_test_basic9
 
 
 # Cosmetic Extended
+# https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters
+# https://www.w3.org/TR/xpath-3/
 
-localhost##.nano_test_basic1:has-text("HIDE")
+localhost##.nano_test_extended1:has(:scope > span)
+localhost##.nano_test_extended2:has-text(/^H\s?I\s+D\s?E$/)
+localhost##[data-test$="nano-test-extended3"]:if(#nano_test_extended3:has-text(HIDE))
+localhost###nano_test_extended4:if-not(.nano_test_extended4:has(span))
+localhost##.nano_test_extended5:matches-css(color: rgb(0, 128, 0))
+localhost##.nano_test_extended6:matches-css-after(content: "ST")
+localhost##.nano_test_extended7:matches-css-before(content: "TE")
+localhost##body:xpath(//*[@id="nano_test_extended8"]/span[2] | //*[@id="nano_test_extended8"]/a[2])

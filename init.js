@@ -194,6 +194,8 @@ process.on("unhandledRejection", (err) => {
     global.dashboard = await browser.browser.newPage();
     await dashboard.goto(localhostBase);
     for (let tab of cleanUp) {
+        // Must clean up after opening the dashboard, otherwise Chromium
+        // may close with the last tab
         await tab.close();
     }
     console.log("[Browser] Ready");
