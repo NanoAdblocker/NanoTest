@@ -6,16 +6,33 @@
     <meta name="author" content="jspenguin2017" />
     <title>Nano Test Engine Dashboard</title>
     <link rel="stylesheet" href="Paper.css" />
-    <script src="index.js" charset="utf-8" defer></script>
 </head>
 <body>
     <div class="container">
         <h2>Nano Test Engine Dashboard</h2>
         <p id="basic-browser-info"></p>
+        <script>
+            document.getElementById("basic-browser-info").textContent = navigator.userAgent;
+        </script>
     </div>
+    <script>
+        const _nano_test_engine = async (e, name) => {
+            const result = e.target.nextElementSibling;
+            console.assert(result instanceof HTMLSpanElement);
+
+            if (await nano_test_engine(name)) {
+                result.textContent = "Test Passed";
+            } else {
+                result.textContent = "Test Failed";
+            }
+        };
+    </script>
     <div class="container">
         <h2>Filter Tests</h2>
-        <p><a href="javascript:nano_test_engine('cosmetic-basic');">Cosmetic Basic</a></p>
+        <p>
+            <a href="javascript:undefined" onclick="_nano_test_engine(event, 'cosmetic_basic');">Cosmetic Basic</a>
+            <span></span>
+        </p>
     </div>
 </body>
 </html>

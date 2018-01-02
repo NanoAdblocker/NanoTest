@@ -159,7 +159,7 @@ process.on("unhandledRejection", (err) => {
     let extension = "../NanoCore/dist/build/Nano_Chromium/";
     let userdata = "./userdata/data/";
     let autoconfig = true;
-    for (let arg in process.argv) {
+    for (let arg of process.argv) {
         const extOpt = "--override-extension-path=";
         const userOpt = "--override-user-data-dir=";
         const noacOpt = "--skip-auto-config";
