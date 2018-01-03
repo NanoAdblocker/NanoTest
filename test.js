@@ -5,10 +5,10 @@
 "use strict";
 
 /**
- * Check whether a cosmetic test passed.
+ * Check whether a test passed.
  * @function
  */
-const checkCosmeticTest = (debug) => {
+const checkTest = (debug) => {
     const visible = document.querySelectorAll("._nano_test_visible");
     if (visible.length === 0) {
         return false;
@@ -74,14 +74,14 @@ const tests = {
         await delay(1000);
 
         try {
-            await page.waitForFunction(checkCosmeticTest, {
+            await page.waitForFunction(checkTest, {
                 timeout: 1000,
             });
             await page.close();
             return true;
         } catch (err) {
             if (/timeout/i.test(err.message)) {
-                await page.evaluate(checkCosmeticTest, true);
+                await page.evaluate(checkTest, true);
                 return false;
             } else {
                 throw err;

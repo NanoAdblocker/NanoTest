@@ -53,3 +53,11 @@ localhost.jspenguin.com##.nano_test_other7[-ext-contains="HIDE"]
 localhost.jspenguin.com##.nano_test_other8[-ext-matches-css="color: rgb(0, 128, 0)"]
 localhost.jspenguin.com##.nano_test_other9[-ext-matches-css-after='content: "ST"']
 localhost.jspenguin.com##.nano_test_other10[-ext-matches-css-before='content: "TE"']
+
+localhost.jspenguin.com#$##nano_test_other11 { display: none !important }
+localhost.jspenguin.com#@$##nano_test_other11 { display: none !important }
+
+
+# Network Basic
+
+
