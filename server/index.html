@@ -19,6 +19,7 @@
         const _nano_test_engine = async (e, name) => {
             const result = e.target.nextElementSibling;
             console.assert(result instanceof HTMLSpanElement);
+            result.textContent = "Test Running";
 
             if (await nano_test_engine(name)) {
                 result.textContent = "Test Passed";
@@ -28,7 +29,7 @@
         };
     </script>
     <div class="container">
-        <h2>Filter Tests</h2>
+        <h2>Cosmetic Filter Tests</h2>
         <p>
             <a href="javascript:undefined" onclick="_nano_test_engine(event, 'cosmetic_basic');">Cosmetic Basic</a>
             <span></span>
