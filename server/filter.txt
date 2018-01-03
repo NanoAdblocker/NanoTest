@@ -60,4 +60,8 @@ localhost.jspenguin.com#@$##nano_test_other11 { display: none !important }
 
 # Network Basic
 
+||localhost.jspenguin.com:1337/tests/network_basic1.js$script
+|http://localhost.jspenguin.com:1337/tests/network_basic2.js|$script
+||jspenguin.com^Static^Paper.js|$script,domain=localhost.jspenguin.com
+/tests/network_basic4$stylesheet
 

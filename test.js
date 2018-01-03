@@ -94,6 +94,11 @@ const tests = {
     cosmetic_other: async () => {
         return await tests.cosmetic_basic("cosmetic-other");
     },
+
+    // Some network filter tests use DOM flag elements to enable code reuse
+    network_basic: async () => {
+        return await tests.cosmetic_basic("network-basic");
+    },
 };
 
 /**

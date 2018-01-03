@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -10,12 +10,41 @@
     <div class="_nano_test_visible">TEST</div>
 
     <div id="nano_flag_basic1" class="_nano_test_hide">TEST</div>
+    <script src="network_basic1.js"></script>
     <script>
-
-
+        if (!window.network_basic1_failed) {
+            document.getElementById("nano_flag_basic1").style.display = "none";
+        }
     </script>
 
+    <div id="nano_flag_basic2" class="_nano_test_hide">TEST</div>
+    <script>
+        window.network_basic2 = true;
+    </script>
+    <script src="network_basic2.js"></script>
+    <script>
+        if (window.network_basic2) {
+            document.getElementById("nano_flag_basic2").style.display = "none";
+        }
+    </script>
 
+    <div id="nano_flag_basic3" class="_nano_test_hide">TEST</div>
+    <script src="https://jspenguin.com/Static/Paper.js"></script>
+    <script>
+        if (typeof wait === "undefined") {
+            document.getElementById("nano_flag_basic3").style.display = "none";
+        }
+    </script>
+
+    <link rel="stylesheet" href="network_basic4.css" />
+    <div id="nano_flag_basic4_1" class="_nano_test_visible">TEST</div>
+    <div id="nano_flag_basic4_2" class="_nano_test_hide">TEST</div>
+    <script src="network_basic4.js"></script>
+    <script>
+        if (window.network_basic4) {
+            document.getElementById("nano_flag_basic4_2").style.display = "none";
+        }
+    </script>
 
     <div class="_nano_test_visible">TEST</div>
 </body>
