@@ -203,7 +203,6 @@ process.on("unhandledRejection", (err) => {
     } catch (err) { }
     global.browser = new Browser(extension, userdata, debugmode);
     await browser.setup();
-    console.log("[Browser] Started");
     if (autoconfig) {
         cleanUp = await (require("./config"))();
     }
@@ -219,6 +218,5 @@ process.on("unhandledRejection", (err) => {
         }
     }
     cleanUp = null;
-    console.log("[Browser] Ready");
     await (require("./test"))();
 })();

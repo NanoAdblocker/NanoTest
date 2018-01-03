@@ -104,6 +104,9 @@ module.exports = async () => {
     await dashboard.exposeFunction("nano_test_engine", async (test_name) => {
         if (tests.hasOwnProperty(test_name)) {
             return await tests[test_name]();
+        } else {
+            console.error("[Tests] Not Found ::", test_name);
+            return false;
         }
     });
 };
