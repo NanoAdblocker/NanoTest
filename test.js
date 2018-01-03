@@ -91,6 +91,9 @@ const tests = {
     cosmetic_extended: async () => {
         return await tests.cosmetic_basic("cosmetic-extended");
     },
+    cosmetic_other: async () => {
+        return await tests.cosmetic_basic("cosmetic-other");
+    },
 };
 
 /**
