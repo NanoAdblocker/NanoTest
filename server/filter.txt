@@ -4,41 +4,52 @@
 # Cosmetic Basic
 # These are plain CSS selectors, although even native CSS can get complex
 
-localhost###nano_test_basic1
-localhost##.nano_test_basic2
-localhost##nano-test-basic3
+localhost.jspenguin.com###nano_test_basic1
+localhost.jspenguin.com##.nano_test_basic2
+localhost.jspenguin.com##nano-test-basic3
 
-localhost###nano_test_basic4 > div
-localhost##[data-test="nano-test-basic5"]
-localhost###nano_test_basic6 *:first-child
-localhost###nano_test_basic7 + nano-test-basic7
-localhost###nano_test_basic8 > :not(span)
+localhost.jspenguin.com###nano_test_basic4 > div
+localhost.jspenguin.com##[data-test="nano-test-basic5"]
+localhost.jspenguin.com###nano_test_basic6 *:first-child
+localhost.jspenguin.com###nano_test_basic7 + nano-test-basic7
+localhost.jspenguin.com###nano_test_basic8 > :not(span)
 
-localhost##.nano_test_basic9
-localhost#@#.nano_test_basic9
+localhost.jspenguin.com##.nano_test_basic9
+localhost.jspenguin.com#@#.nano_test_basic9
 
 
 # Cosmetic Extended
 # https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters
 # https://www.w3.org/TR/xpath-3/
 
-localhost##.nano_test_extended1:has(:scope > span)
-localhost##.nano_test_extended2:has-text(/^H\s?I\s+D\s?E$/)
+localhost.jspenguin.com##.nano_test_extended1:has(:scope > span)
+localhost.jspenguin.com##.nano_test_extended2:has-text(/^H\s?I\s+D\s?E$/)
 
-localhost##[data-test$="nano-test-extended3"]:if(:scope > div:has-text(HIDE))
-localhost###nano_test_extended4:if-not(:scope > div:has(span))
+localhost.jspenguin.com##[data-test$="nano-test-extended3"]:if(:scope > div:has-text(HIDE))
+localhost.jspenguin.com###nano_test_extended4:if-not(:scope > div:has(span))
 
-localhost##.nano_test_extended5:matches-css(color: rgb(0, 128, 0))
-localhost##.nano_test_extended6:matches-css-after(content: "ST")
-localhost##.nano_test_extended7:matches-css-before(content: "TE")
+localhost.jspenguin.com##.nano_test_extended5:matches-css(color: rgb(0, 128, 0))
+localhost.jspenguin.com##.nano_test_extended6:matches-css-after(content: "ST")
+localhost.jspenguin.com##.nano_test_extended7:matches-css-before(content: "TE")
+localhost.jspenguin.com##.nano_test_extended8:matches-css(position: fixed):matches-css(top: /^\d\dpx$/)
 
-localhost##body:xpath(//*[@id="nano_test_extended8"]/span[2] | //*[@id="nano_test_extended8"]/a[2])
+localhost.jspenguin.com##body:xpath(//*[@id="nano_test_extended9"]/span[2] | //*[@id="nano_test_extended9"]/a[2])
 
 
 # Cosmetic Other
 # Style injection, script snippets injection, syntax shims
 
-localhost###nano_test_other1:style(display: block !important;)
-localhost#$##nano_test_other2 { display: block !important }
+localhost.jspenguin.com###nano_test_other1:style(display: block !important;)
+localhost.jspenguin.com#$##nano_test_other2 { display: block !important }
 
-localhost##script:inject(nano-remove-element-onready.js, [data-test="nano-test-other3"])
+localhost.jspenguin.com##script:inject(nano-remove-element-onready.js, [data-test="nano-test-other3"])
+
+localhost.jspenguin.com#?#[data-test$="nano-test-other4"]:-abp-has(:scope > div:-abp-contains(HIDE))
+
+localhost.jspenguin.com###nano_test_other5[-ext-has=":scope > div > span"]
+localhost.jspenguin.com##.nano_test_other6:contains(HIDE)
+localhost.jspenguin.com##.nano_test_other7[-ext-contains="HIDE"]
+
+localhost.jspenguin.com##.nano_test_other8[-ext-matches-css="color: rgb(0, 128, 0)"]
+localhost.jspenguin.com##.nano_test_other9[-ext-matches-css-after='content: "ST"']
+localhost.jspenguin.com##.nano_test_other10[-ext-matches-css-before='content: "TE"']

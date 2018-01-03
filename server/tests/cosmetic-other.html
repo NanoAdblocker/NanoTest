@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -13,6 +13,46 @@
     <div id="nano_test_other2" style="display: none;" class="_nano_test_visible">TEST</div>
 
     <div data-test="nano-test-other3" style="display: none;" class="_nano_test_visible">TEST</div>
+
+    <div data-test="extra-nano-test-other4" class="_nano_test_hide">
+        <span class="_nano_test_hide">TEST</span>
+        <div class="_nano_test_hide">HIDE</div>
+    </div>
+
+    <div id="nano_test_other5" class="_nano_test_hide">
+        <div class="_nano_test_hide">
+            <span class="_nano_test_hide">TEST</span>
+        </div>
+    </div>
+
+    <div class="nano_test_other6 _nano_test_visible">TEST</div>
+    <div class="nano_test_other6 _nano_test_hide">HIDE</div>
+
+    <div class="nano_test_other7 _nano_test_hide">HIDE</div>
+    <div class="nano_test_other7 _nano_test_visible">TEST</div>
+    
+    <!-- getComputedStyle($0).color === "rgb(255, 0, 0)" -->
+    <div style="color: red;" class="nano_test_other8 _nano_test_visible">TEST</div>
+    <!-- getComputedStyle($0).color === "rgb(0, 128, 0)" -->
+    <div style="color: green;" class="nano_test_other8 _nano_test_hide">TEST</div>
+
+    <style>
+        .nano_test_other9._nano_test_hide::after {
+            /* getComputedStyle($0, ":after").content === '"ST"' */
+            content: "ST";
+        }
+    </style>
+    <div class="nano_test_other9 _nano_test_hide">TE</div>
+    <div class="nano_test_other9 _nano_test_visible">TEST</div>
+
+    <style>
+        .nano_test_other10._nano_test_hide::before {
+            /* getComputedStyle($0, ":before").content === '"TE"' */
+            content: "TE";
+        }
+    </style>
+    <div class="nano_test_other10 _nano_test_visible">TEST</div>
+    <div class="nano_test_other10 _nano_test_hide">ST</div>
 
     <div class="_nano_test_visible">TEST</div>
 </body>

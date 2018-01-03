@@ -20,9 +20,13 @@ global.puppeteer = require("puppeteer");
 
 /**
  * The base path of the localhost server.
+ * The special domain localhost causes weird behavior because it is
+ * not listed in Public Suffix List.
+ * localhost.jspenguin.com routes to 127.0.0.1.
  * @const {string}
  */
-global.localhostBase = "http://localhost:1337/";
+//global.localhostBase = "http://localhost:1337/";
+global.localhostBase = "http://localhost.jspenguin.com:1337/";
 
 /**
  * Wait for some time.
