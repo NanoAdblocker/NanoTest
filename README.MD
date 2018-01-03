@@ -44,5 +44,4 @@ Skip automated configuration which does the following:
 - Load test filter
 - Update the test filter
 - Close "chrome://extensions/" and the extension dashboard
-
 ```
