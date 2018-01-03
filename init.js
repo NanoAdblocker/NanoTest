@@ -86,10 +86,13 @@ global.Browser = class {
      * @constructor
      * @param {string} extension - The path to the extension to load.
      * @param {string} userdata - The path to the user data directory.
+     * @param {boolean} debugmode - Whether the developer tools should be opened
+     ** for every page.
      */
-    constructor(extension, userdata) {
+    constructor(extension, userdata, debugmode) {
         assert(extension && typeof extension === "string");
         assert(userdata && typeof userdata === "string");
+        assert(typeof debugmode === "boolean");
 
         /**
          * The extension to load.
@@ -101,6 +104,11 @@ global.Browser = class {
          * @const @prop {string}
          */
         this.userdata = path.resolve(userdata);
+        /**
+         * The debug mode flag.
+         * @const @prop {boolean}
+         */
+        this.debugmode = debugmode;
 
         /**
          * The browser.
@@ -132,7 +140,7 @@ global.Browser = class {
                 "--load-extension=" + this.extension,
             ],
             userDataDir: this.userdata,
-            devtools: process.argv.includes("--debug-mode"),
+            devtools: this.debugmode,
         });
 
         this.browser.on("disconnected", () => {
@@ -159,15 +167,17 @@ process.on("unhandledRejection", (err) => {
 
 // Bootstrap
 (async () => {
-    let cleanUp = [];
+    let cleanUp = null;
 
     // Parse options
     let extension = "../NanoCore/dist/build/Nano_Chromium/";
     let userdata = "./userdata/data/";
+    let debugmode = false;
     let autoconfig = true;
     for (let arg of process.argv) {
         const extOpt = "--override-extension-path=";
         const userOpt = "--override-user-data-dir=";
+        const debugOpt = "--debug-mode";
         const noacOpt = "--skip-auto-config";
 
         if (arg.startsWith(extOpt)) {
@@ -176,6 +186,10 @@ process.on("unhandledRejection", (err) => {
 
         if (arg.startsWith(userOpt)) {
             extension = arg.substring(userOpt.length).trim();
+        }
+
+        if (arg === userOpt) {
+            debugmode = true;
         }
 
         if (arg === noacOpt) {
@@ -187,7 +201,7 @@ process.on("unhandledRejection", (err) => {
     try {
         await (util.promisify(fs.mkdir))(userdata);
     } catch (err) { }
-    global.browser = new Browser(extension, userdata);
+    global.browser = new Browser(extension, userdata, debugmode);
     await browser.setup();
     console.log("[Browser] Started");
     if (autoconfig) {
@@ -197,10 +211,12 @@ process.on("unhandledRejection", (err) => {
     // Open dashboard
     global.dashboard = await browser.browser.newPage();
     await dashboard.goto(localhostBase);
-    for (let tab of cleanUp) {
-        // Must clean up after opening the dashboard, otherwise Chromium
-        // may close with the last tab
-        await tab.close();
+    if (cleanUp) {
+        for (let tab of cleanUp) {
+            // Must clean up after opening the dashboard, otherwise Chromium
+            // may close with the last tab
+            await tab.close();
+        }
     }
     cleanUp = null;
     console.log("[Browser] Ready");
