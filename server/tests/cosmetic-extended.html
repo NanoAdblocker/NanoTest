@@ -24,11 +24,16 @@
     <div class="nano_test_extended2 _nano_test_visible">TEST</div>
     <div class="nano_test_extended2 _nano_test_hide">HI  DE</div>
 
-    <div data-test="extra-nano-test-extended3" class="_nano_test_hide">TEST</div>
-    <div id="nano_test_extended3" class="_nano_test_visible">HIDE</div>
+    <div data-test="extra-nano-test-extended3" class="_nano_test_hide">
+        <span class="_nano_test_hide">TEST</span>
+        <div class="_nano_test_hide">HIDE</div>
+    </div>
 
-    <div id="nano_test_extended4" class="_nano_test_hide">TEST</div>
-    <div class="nano_test_extended4 _nano_test_visible">TEST</div>
+    <div id="nano_test_extended4" class="_nano_test_visible">
+        <div class="_nano_test_visible">
+            <span class="_nano_test_visible">TEST</span>
+        </div>
+    </div>
 
     <!-- getComputedStyle($0).color === "rgb(255, 0, 0)" -->
     <div style="color: red;" class="nano_test_extended5 _nano_test_visible">TEST</div>
