@@ -30,7 +30,7 @@ global.localhostBase = "http://localhost:1337/";
  * @param {number} d - The delay.
  */
 global.delay = (d) => {
-    return new Promise((resolve) => { setTimeout(resolve, d) });
+    return new Promise((r) => { setTimeout(r, d) });
 };
 
 /**
@@ -198,6 +198,7 @@ process.on("unhandledRejection", (err) => {
         // may close with the last tab
         await tab.close();
     }
+    cleanUp = null;
     console.log("[Browser] Ready");
     await (require("./test"))();
 })();
