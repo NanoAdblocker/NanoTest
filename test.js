@@ -11,6 +11,9 @@
 const checkTest = (debug) => {
     const visible = document.querySelectorAll("._nano_test_visible");
     if (visible.length === 0) {
+        if (debug) {
+            debugger;
+        }
         return false;
     }
     for (let e of visible) {
@@ -33,6 +36,9 @@ const checkTest = (debug) => {
 
     const hide = document.querySelectorAll("._nano_test_hide");
     if (hide.length === 0) {
+        if (debug) {
+            debugger;
+        }
         return false;
     }
     for (let e of hide) {
@@ -68,7 +74,7 @@ const checkTest = (debug) => {
  * @const {Object.<Function>}
  */
 const tests = {
-    cosmetic_basic: async (override = "cosmetic-basic") => {
+    extended_basic: async (override = "extended-basic") => {
         let page = await browser.browser.newPage();
         await page.goto(localhostBase + "tests/" + override);
         await delay(1000);
@@ -88,16 +94,16 @@ const tests = {
             }
         }
     },
-    cosmetic_extended: async () => {
-        return await tests.cosmetic_basic("cosmetic-extended");
+    extended_extended: async () => {
+        return await tests.extended_basic("extended-extended");
     },
-    cosmetic_other: async () => {
-        return await tests.cosmetic_basic("cosmetic-other");
+    extended_other: async () => {
+        return await tests.extended_basic("extended-other");
     },
 
     // Some network filter tests use DOM flag elements to enable code reuse
     network_basic: async () => {
-        return await tests.cosmetic_basic("network-basic");
+        return await tests.extended_basic("network-basic");
     },
 };
 
