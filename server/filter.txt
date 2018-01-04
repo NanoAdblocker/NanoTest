@@ -58,7 +58,8 @@ localhost.jspenguin.com#$##nano_test_other11 { display: none !important }
 localhost.jspenguin.com#@$##nano_test_other11 { display: none !important }
 
 
-# TODO 2018-01-03: Add tests for extended HTML filtering
+# TODO 2018-01-03: Add tests for extended HTML filtering, this will not come anytime soon as Chromium does not yet
+# support it
 
 
 # Network Basic

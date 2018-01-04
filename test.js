@@ -23,7 +23,7 @@ const checkTest = (debug) => {
                 break;
             }
 
-            // To be visible, all parents must be also visible
+            // To be visible, itself and all parents must be visible
             const display = getComputedStyle(elem).display;
             if (display !== "block" && display !== "inline" && display !== "inline-block") {
                 if (debug) {
