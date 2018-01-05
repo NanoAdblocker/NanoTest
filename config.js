@@ -11,12 +11,20 @@ module.exports = async () => {
     // Find pages
     let bgpage, extid;
     let tab;
-    browser.browser.targets().forEach((target) => {
+    let existingTargets = browser.browser.targets();
+    for (let target of existingTargets) {
         switch (target.type()) {
             case "other":
                 const match = /^chrome-extension:\/\/([^/]+)\//.exec(target.url());
                 if (match) {
-                    assert(bgpage === undefined && extid === undefined);
+                    if (bgpage !== undefined && extid !== undefined) {
+                        // Sometimes Chromium will load two copies of the extension when
+                        // starting for the first time
+                        console.error("[Config] Error :: Try Restarting");
+                        while (true) {
+                            await delay(10000);
+                        }
+                    }
 
                     bgpage = target;
                     extid = match[1];
@@ -28,7 +36,8 @@ module.exports = async () => {
             default:
                 break;
         }
-    });
+    }
+    assert(bgpage !== undefined && typeof extid === "string");
     tab = await tab;
     let toClose = [];
 
@@ -37,12 +46,6 @@ module.exports = async () => {
     toClose.push(tab);
     tab.evaluate((extid) => {
         // This will blow up if Chromium extensions page is changed
-        const devToggle = document.querySelector("#dev-toggle input[type='checkbox']");
-        console.assert(devToggle instanceof HTMLInputElement);
-        if (!devToggle.checked) {
-            devToggle.click();
-        }
-
         const performExtConfig = () => {
             const loading = document.getElementById("loading-spinner");
             console.assert(loading instanceof HTMLDivElement);
@@ -51,12 +54,16 @@ module.exports = async () => {
                 return;
             }
 
+            let foundExtension = false;
+
             const extensions = document.querySelectorAll(".extension-list-item");
             for (let extension of extensions) {
                 console.assert(extension instanceof HTMLDivElement);
                 const id = extension.querySelector(".developer-extras .extension-id");
                 console.assert(id instanceof HTMLSpanElement);
                 if (id.textContent.trim() === extid) {
+                    foundExtension = true;
+
                     const controls = extension.querySelectorAll(".optional-controls input[type='checkbox']");
                     console.assert(controls.length === 4);
                     for (let control of controls) {
@@ -88,11 +95,34 @@ module.exports = async () => {
                     break;
                 }
             }
+
+            if (!foundExtension) {
+                setTimeout(performExtConfig, 100);
+                return;
+            }
         };
 
-        performExtConfig();
+        const devToggle = document.querySelector("#dev-toggle input[type='checkbox']");
+        console.assert(devToggle instanceof HTMLInputElement);
+        if (devToggle.checked) {
+            performExtConfig();
+        } else {
+            devToggle.click();
+            requestAnimationFrame(performExtConfig);
+        }
     }, extid);
-    await tab.waitForFunction("window._nano_test_openbgconsole_done === true");
+    try {
+        await tab.waitForFunction("window._nano_test_openbgconsole_done === true", {
+            timeout: 10000,
+        });
+    } catch (err) {
+        if (/timeout/i.test(err.message)) {
+            // Try again
+            return await module.exports();
+        } else {
+            throw err;
+        }
+    }
     await delay(2000);
 
     // Update test filter

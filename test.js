@@ -81,7 +81,7 @@ const tests = {
 
         try {
             await page.waitForFunction(checkTest, {
-                timeout: 1000,
+                timeout: 1500,
             });
             await page.close();
             return true;
