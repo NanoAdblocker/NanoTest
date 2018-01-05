@@ -188,7 +188,7 @@ process.on("unhandledRejection", (err) => {
             extension = arg.substring(userOpt.length).trim();
         }
 
-        if (arg === debugOpt) { 
+        if (arg === debugOpt) {
             debugmode = true;
         }
 
