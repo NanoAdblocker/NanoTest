@@ -170,7 +170,7 @@ process.on("unhandledRejection", (err) => {
     let cleanUp = null;
 
     // Parse options
-    let extension = "../NanoCore/dist/build/Nano_Chromium/";
+    let extension = "../NanoBuild/dist/nano_adblocker_chromium/";
     let userdata = "./userdata/data/";
     let debugmode = false;
     let autoconfig = true;
