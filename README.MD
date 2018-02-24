@@ -26,7 +26,7 @@ A debugger breakpoint will be triggered on failed test, this option can be usefu
 
 --override-extension-path=<path>
 Change the path to the extension to load
-Defaults to "../NanoCore/dist/build/Nano_Chromium/"
+Defaults to "../NanoBuild/dist/nano_adblocker_chromium/"
 
 --override-user-data-dir=<path>
 Change the path to the user data directory
