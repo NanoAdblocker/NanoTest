@@ -45,71 +45,95 @@ module.exports = async () => {
     await tab.goto("chrome://extensions/");
     toClose.push(tab);
     tab.evaluate((extid) => {
-        // This will blow up if Chromium extensions page is changed
+        // This will blow up again if Chromium extensions page is changed again
         const performExtConfig = () => {
-            const loading = document.getElementById("loading-spinner");
-            console.assert(loading instanceof HTMLDivElement);
-            if (loading.getAttribute("hidden") === null) {
+            let extension = document
+                .querySelector("extensions-manager").shadowRoot
+                .querySelector("extensions-item-list.active");
+            if (!extension) {
                 setTimeout(performExtConfig, 100);
                 return;
             }
+            extension = extension.shadowRoot.querySelector("extensions-item#" + extid);
+            if (!extension) {
+                setTimeout(performExtConfig, 100);
+                return;
+            }
+            extension = extension.shadowRoot;
 
-            let foundExtension = false;
-
-            const extensions = document.querySelectorAll(".extension-list-item");
-            for (let extension of extensions) {
-                console.assert(extension instanceof HTMLDivElement);
-                const id = extension.querySelector(".developer-extras .extension-id");
-                console.assert(id instanceof HTMLSpanElement);
-                if (id.textContent.trim() === extid) {
-                    foundExtension = true;
-
-                    const controls = extension.querySelectorAll(".optional-controls input[type='checkbox']");
-                    console.assert(controls.length === 4);
-                    for (let control of controls) {
-                        switch (control.getAttribute("focus-type")) {
-                            case "incognito":
-                            case "collectErrors":
-                                if (!control.checked) {
-                                    control.click();
-                                }
-                                break;
-                            case "localUrls":
-                                if (control.checked) {
-                                    control.click();
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                    const pages = extension.querySelectorAll(".active-views a");
-                    console.assert(pages.length >= 1); // Could have the WebRTC test iframe
-                    for (let page of pages) {
-                        if (page.textContent.trim() === "background.html") {
-                            page.click();
-                        }
-                    }
-
-                    window._nano_test_openbgconsole_done = true;
+            const inspectViews = extension.querySelectorAll("#inspect-views a");
+            for (let view of inspectViews) {
+                if (view.innerHTML.trim() === "background.html") { // Could have WebRTC detection iframe
+                    view.click();
                     break;
                 }
             }
 
-            if (!foundExtension) {
-                setTimeout(performExtConfig, 100);
-                return;
+            const detailsButton = extension.getElementById("details-button");
+            detailsButton.click();
+
+            const performExtDeepConfig = () => {
+                let optionsSection = document
+                    .querySelector("extensions-manager").shadowRoot
+                    .querySelector("extensions-detail-view.active");
+                if (!optionsSection) {
+                    setTimeout(performExtDeepConfig, 100);
+                    return;
+                }
+                optionsSection = optionsSection.shadowRoot.getElementById("options-section");
+                if (!optionsSection) {
+                    setTimeout(performExtDeepConfig, 100);
+                    return;
+                }
+
+                const setOneToggle = (name, value) => {
+                    const button = optionsSection
+                        .querySelector(name).shadowRoot
+                        .querySelector("cr-toggle");
+                    if (button.checked !== value) {
+                        button.click();
+                    }
+                };
+
+                setOneToggle("#allow-incognito", true);
+                setOneToggle("#collect-errors", true);
+                setOneToggle("#allow-on-file-urls", false);
+            };
+
+
+            const controls = extension.querySelectorAll(".optional-controls input[type='checkbox']");
+            console.assert(controls.length === 4);
+            for (let control of controls) {
+                switch (control.getAttribute("focus-type")) {
+                    case "incognito":
+                    case "collectErrors":
+                        if (!control.checked) {
+                            control.click();
+                        }
+                        break;
+                    case "localUrls":
+                        if (control.checked) {
+                            control.click();
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
+
+
+            window._nano_test_openbgconsole_done = true;
         };
 
-        const devToggle = document.querySelector("#dev-toggle input[type='checkbox']");
-        console.assert(devToggle instanceof HTMLInputElement);
-        if (devToggle.checked) {
-            performExtConfig();
-        } else {
+        const devToggle = document
+            .querySelector("extensions-manager").shadowRoot
+            .querySelector("extensions-toolbar").shadowRoot
+            .querySelector("cr-toolbar #dev-mode");
+        console.assert(devToggle !== null);
+        if (!devToggle.checked) {
             devToggle.click();
-            requestAnimationFrame(performExtConfig);
         }
+        requestAnimationFrame(performExtConfig);
     }, extid);
     try {
         await tab.waitForFunction("window._nano_test_openbgconsole_done === true", {
