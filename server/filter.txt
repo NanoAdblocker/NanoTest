@@ -42,7 +42,7 @@ localhost.jspenguin.com##body:xpath(//*[@id="nano_test_extended9"]/span[2] | //*
 localhost.jspenguin.com###nano_test_other1:style(display: block !important;)
 localhost.jspenguin.com#$##nano_test_other2 { display: block !important }
 
-localhost.jspenguin.com##script:inject(nano-remove-element-onready.js, [data-test="nano-test-other3"])
+localhost.jspenguin.com##script:inject(nano-remove-elements-onready.js, [data-test="nano-test-other3"])
 
 localhost.jspenguin.com#?#[data-test$="nano-test-other4"]:-abp-has(:scope > div:-abp-contains(HIDE))
 
