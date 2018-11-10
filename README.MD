@@ -2,6 +2,9 @@
 
 But does it even work?
 
+*Note*: This is very out of date, and I no longer control the `jspenguin.com`
+domain. Be careful if you want to play around with it.
+
 The automated testing framework for Nano Adblocker, requires latest current
 branch of [Node.js](https://nodejs.org/en/).
 
