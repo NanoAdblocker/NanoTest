@@ -4,18 +4,18 @@
     "url": "https://github.com/NanoAdblocker/NanoTest/issues"
   },
   "dependencies": {
-    "esprima": "4.0.0",
-    "express": "4.16.2",
-    "puppeteer": "1.1.0"
+    "esprima": "^4.0.0",
+    "express": "^4.16.2",
+    "puppeteer": "^1.1.0"
   },
   "description": "But does it even work?",
   "engines": {
-    "node": ">=9.2.0"
+    "node": "^10.16.0"
   },
   "homepage": "https://github.com/NanoAdblocker/NanoTest",
   "license": "GPL-3.0",
   "name": "nano-test",
   "private": true,
   "repository": "https://github.com/NanoAdblocker/NanoTest",
-  "version": "1.0.0"
+  "version": "1.0.1"
 }
