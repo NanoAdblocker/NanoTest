@@ -10,12 +10,12 @@
   },
   "description": "But does it even work?",
   "engines": {
-    "node": "10.16.1"
+    "node": "10.16.2"
   },
   "homepage": "https://github.com/NanoAdblocker/NanoTest",
   "license": "GPL-3.0",
   "name": "nano-test",
   "private": true,
   "repository": "https://github.com/NanoAdblocker/NanoTest",
-  "version": "1.0.4"
+  "version": "1.0.5"
 }
