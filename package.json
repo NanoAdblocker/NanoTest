@@ -6,7 +6,7 @@
   "dependencies": {
     "esprima": "4.0.1",
     "express": "4.17.1",
-    "puppeteer": "2.0.0"
+    "puppeteer": "2.1.0"
   },
   "description": "But does it even work?",
   "engines": {
@@ -17,5 +17,5 @@
   "name": "nano-test",
   "private": true,
   "repository": "https://github.com/NanoAdblocker/NanoTest",
-  "version": "1.0.11"
+  "version": "1.0.12"
 }
